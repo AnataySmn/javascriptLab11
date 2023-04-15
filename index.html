@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Shopping List</title>
+  </head>
+  <body>
+    <h1>Dynamic Shopping List</h1>
+    <form>
+      <input type="text" id="item" placeholder="Enter an item">
+      <button type="submit">Add item</button>
+    </form>
+    <section id="list"></section>
+    <script>
+      const items = [];
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.querySelector('#item');
+        const newItem = input.value.trim();
+        if (newItem !== '') {
+          items.push(newItem);
+          renderList();
+          input.value = '';
+          input.focus();
+        }
+      });
+
+      function renderList() {
+        const list = document.querySelector('#list');
+        list.innerHTML = '';
+        if (items.length === 0) {
+          list.innerHTML = '<p>No items yet</p>';
+        } else {
+          const ul = document.createElement('ul');
+          items.forEach(function(item) {
+            const li = document.createElement('li');
+            li.textContent = item;
+            const button = document.createElement('button');
+            button.textContent = 'Remove';
+            button.addEventListener('click', function() {
+              const index = items.indexOf(item);
+              if (index > -1) {
+                items.splice(index, 1);
+                renderList();
+              }
+            });
+            li.appendChild(button);
+            ul.appendChild(li);
+          });
+          list.appendChild(ul);
+        }
+      }
+    </script>
+  </body>
+</html>
